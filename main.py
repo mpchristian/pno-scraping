@@ -10,4 +10,8 @@ headers = {
 }
 response = requests.get(url, headers=headers)
 selector = Selector(text=response.text)
-print(selector)
+
+
+# Pegar artigos da primeira pagina
+first_page = selector.css(".entry-title.h2 a::attr(href)").getall()
+print(first_page)
