@@ -12,3 +12,6 @@ pip install flake8
 
 ## Instala biblioteca parsel para extrair dados de requisição
 python3 -m pip install parsel
+
+## Executar localmente
+python3 main.py

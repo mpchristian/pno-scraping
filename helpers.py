@@ -81,7 +81,7 @@ def get_name_of_article(article, path):
         name = splited_name[1].replace(" ", "_")
     else:
         name = splited_name[0].replace(" ", "_")
-    print(name)
+
     file_name = path + "/roteiro_" + name + ".pdf"
     return file_name
 

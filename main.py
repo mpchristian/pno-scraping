@@ -1,7 +1,7 @@
 import helpers
 
 
-def get_articles(main_page_url, amount):
+def get_articles(main_page_url, path, amount):
     """It recieves the url of the main page and the max naumber of artiles;
     Uses all helper functions: fetch, scrape_articles, scrape_article,
     get_name_of_article, download and scrape_next_page_link
@@ -23,7 +23,7 @@ def get_articles(main_page_url, amount):
             current_article = helpers.scrape_article(current_article_content)
             filename = helpers.get_name_of_article(
               current_article,
-              "/home/christian/Personal-projects/pno-scraping/roteiros"
+              path
               )
             helpers.download(current_article['pdf_url'], filename)
 
@@ -40,5 +40,5 @@ def get_articles(main_page_url, amount):
 
 # Execute
 url = 'https://perguntarnaoofende.com/?s=roteiro'
-
-get_articles(url, 160)
+path = "/home/christian/Personal-projects/pno-scraping/downloads"
+get_articles(url, path, 160)
