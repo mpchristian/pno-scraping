@@ -1,45 +1,45 @@
-import requests
-from parsel import Selector
+import helpers
+from dotenv import dotenv_values
 
 
-# Functions
-def fetch(url):
-    """It recieves an URL;
-    Requests with HTTP GET to this URL;
-    Well secceded: returns with status 200 the text content
-    If response has other status, returns None;
-    If 3 secons Timeout, returns None.
+def get_articles(main_page_url, path, amount):
+    """It recieves the url of the main page and the max naumber of artiles;
+    Uses all helper functions: fetch, scrape_articles, scrape_article,
+    get_name_of_article, download and scrape_next_page_link
+    to get the articles and download the pdf version available
     """
 
-    try:
-        headers = {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; ' +
-          'rv:55.0 Gecko/20100101 Firefox/55.0',
-        }
-        response = requests.get(
-            url, headers=headers, timeout=3
-        )
-        if response.status_code == 200:
-            return response.text
-        return None
-    except requests.ReadTimeout:
-        return None
+    current_page_url = main_page_url
+    all_articles_data = []
+    counter = 1
 
+    while current_page_url and counter <= amount:
+        current_page_content = helpers.fetch(current_page_url)
+        urls_current_page = helpers.scrape_articles(
+          current_page_content,
+          ".entry-title.h2 a::attr(href)")
 
-def scrape_articles(html_content, css_selector):
-    """It recieves a string with the HTML content and CSS selector;
-    Scrapes the recieved contentand returns a list of the articles URLs;
-    If no one article is found, returns ampty list
-    """
-    selector = Selector(text=html_content)
-    urls = selector.css(css_selector).getall()
-    return urls
+        for url in urls_current_page:
+            current_article_content = helpers.fetch(url)
+            current_article = helpers.scrape_article(current_article_content)
+            filename = helpers.get_name_of_article(
+              current_article,
+              path
+              )
+            helpers.download(current_article['pdf_url'], filename)
+
+            counter += 1
+            if counter > amount:
+                break
+
+        current_page_url = helpers.scrape_next_page_link(
+          current_page_content,
+          "a.next.page-numbers::attr(href)")
+
+    return all_articles_data
 
 
 # Execute
+config = dotenv_values(".env")
 url = 'https://perguntarnaoofende.com/?s=roteiro'
-text_content = fetch(url)
-urls = scrape_articles(text_content, ".entry-title.h2 a::attr(href)")
-
-
-print(urls)
+get_articles(url, config["PATH_FILE"], int(config["AMOUNT"]))
