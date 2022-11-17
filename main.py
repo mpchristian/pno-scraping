@@ -48,7 +48,7 @@ def scrape_next_page_link(html_content, css_selector):
 
 
 def scrape_article(html_content):
-    """Recieves a string with the HTML content of an article;
+    """It recieves a string with the HTML content of an article;
     get the infos as a dict with attributes:
         * title - title of article.
         * url - link of the article.
@@ -66,6 +66,30 @@ def scrape_article(html_content):
     return data
 
 
+def get_name_of_artile(article):
+    """It recieves an article dict;
+    Returns the name of the file to be saved by
+    converting the title from "Roteiro para culto doméstico – Salmo 140"
+    to "roteiro_salmo_140.pdf"
+    """
+    splited_name = article["title"].lower().split("– ")
+    name = splited_name[1].replace(" ", "_")
+    return 'roteiro_' + name + ".pdf"
+
+
+def download(url, file_name):
+    """It recieves the url of the pdf and the file_name to be saved;
+    Downloads the file.
+    """
+    headers = {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; ' +
+      'rv:55.0 Gecko/20100101 Firefox/55.0',
+    }
+    with open(file_name, "wb") as file:
+        response = requests.get(url, headers=headers)
+        file.write(response.content)
+
+
 # Execute
 url = 'https://perguntarnaoofende.com/?s=roteiro'
 text_content = fetch(url)
@@ -79,4 +103,5 @@ urls = scrape_articles(
 #   "a.next.page-numbers::attr(href)")
 
 article = scrape_article(fetch(urls[0]))
-print(article)
+print(get_name_of_artile(article))
+# download(article['pdf_url'], 'teste.pdf')
