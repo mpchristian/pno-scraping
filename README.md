@@ -37,4 +37,6 @@ No diretório raiz, execute:
 ### Resultado
 No diretório escolhido, serão encontrados os arquivos baixados:
 
-![Downloaded files](./downloaded-files.png)
+
+<img src="./downloaded-files.png" alt="Downloaded files" width="350">
+
