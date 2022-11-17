@@ -59,6 +59,10 @@ def scrape_article(html_content):
     url = selector.css("head link[rel='canonical']::attr(href)").get()
     pdf_url = selector.css(".wp-block-button__link::attr(href)").get()
 
+    if pdf_url is None:
+        pdf_url = selector.css(".entry-content-single p a::attr(href)").get()
+        # sometimes the page is different, this selector solves that
+
     data = {}
     data["title"] = title
     data["url"] = url
@@ -73,7 +77,11 @@ def get_name_of_article(article, path):
     to "roteiro_salmo_140.pdf"
     """
     splited_name = article["title"].lower().split("– ")
-    name = splited_name[1].replace(" ", "_")
+    if len(splited_name) > 1:
+        name = splited_name[1].replace(" ", "_")
+    else:
+        name = splited_name[0].replace(" ", "_")
+    print(name)
     file_name = path + "/roteiro_" + name + ".pdf"
     return file_name
 

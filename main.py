@@ -41,4 +41,4 @@ def get_articles(main_page_url, amount):
 # Execute
 url = 'https://perguntarnaoofende.com/?s=roteiro'
 
-get_articles(url, 3)
+get_articles(url, 160)
