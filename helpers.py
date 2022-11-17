@@ -66,7 +66,7 @@ def scrape_article(html_content):
     return data
 
 
-def get_name_of_artile(article, path):
+def get_name_of_article(article, path):
     """It recieves an article dict;
     Returns the name of the file to be saved by
     converting the title from "Roteiro para culto doméstico – Salmo 140"
