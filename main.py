@@ -1,4 +1,5 @@
 import helpers
+from dotenv import dotenv_values
 
 
 def get_articles(main_page_url, path, amount):
@@ -39,6 +40,6 @@ def get_articles(main_page_url, path, amount):
 
 
 # Execute
+config = dotenv_values(".env")
 url = 'https://perguntarnaoofende.com/?s=roteiro'
-path = "/home/christian/Personal-projects/pno-scraping/downloads"
-get_articles(url, path, 160)
+get_articles(url, config["PATH_FILE"], int(config["AMOUNT"]))
