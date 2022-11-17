@@ -2,12 +2,13 @@ import requests
 from parsel import Selector
 
 
+# Functions
 def fetch(url):
-    """Recebe uma URL;
-    Faz uma requisição HTTP GET para esta URL;
-    Caso requisição bem sucedida: retorna com status 200 o conteúdo de texto;
-    Caso resposta com status diferente de 200: retorna None;
-    Caso Timeout de 3 segundos: retorna None.
+    """It recieves an URL;
+    Requests with HTTP GET to this URL;
+    Well secceded: returns with status 200 the text content
+    If response has other status, returns None;
+    If 3 secons Timeout, returns None.
     """
 
     try:
@@ -25,14 +26,20 @@ def fetch(url):
         return None
 
 
-# Requisição do tipo GET
+def scrape_articles(html_content, css_selector):
+    """It recieves a string with the HTML content and CSS selector;
+    Scrapes the recieved contentand returns a list of the articles URLs;
+    If no one article is found, returns ampty list
+    """
+    selector = Selector(text=html_content)
+    urls = selector.css(css_selector).getall()
+    return urls
+
+
+# Execute
 url = 'https://perguntarnaoofende.com/?s=roteiro'
 text_content = fetch(url)
+urls = scrape_articles(text_content, ".entry-title.h2 a::attr(href)")
 
 
-selector = Selector(text=text_content)
-
-
-# Pegar artigos da primeira pagina
-first_page = selector.css(".entry-title.h2 a::attr(href)").getall()
-print(first_page)
+print(urls)
