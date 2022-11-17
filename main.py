@@ -48,26 +48,20 @@ def scrape_next_page_link(html_content, css_selector):
 
 
 def scrape_article(html_content):
-    """Recebe uma string contendo o conteúdo HTML da página de uma notícia;
-    busca as informações das notícias e preenche um dicionário com os atributos
-        * url - link para acesso da notícia.
+    """Recieves a string with the HTML content of an article;
+    get the infos as a dict with attributes:
+        * title - title of article.
+        * url - link of the article.
+        * pdf_url - link of the pdf.
     """
     selector = Selector(text=html_content)
-    url = selector.css("head link[rel='canonical']::attr(href)").get()
     title = selector.css(".entry-title::text").get().rstrip()
+    url = selector.css("head link[rel='canonical']::attr(href)").get()
     pdf_url = selector.css(".wp-block-button__link::attr(href)").get()
 
-    # ---------- comments_count
-    comments_count = (
-        selector.css(".pk-share-buttons-count.cs-font-primary::text").get()
-        or "0"
-    )
-    comments_count = [int(s) for s in comments_count.split() if s.isdigit()]
-    # -----------
-
     data = {}
-    data["url"] = url
     data["title"] = title
+    data["url"] = url
     data["pdf_url"] = pdf_url
     return data
 
