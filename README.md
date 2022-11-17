@@ -10,7 +10,7 @@ Para isso, utilizei a linguagem Python, com algumas bibliotecas:
 - <em>dotenv</em>: para utilização de variáveis de ambiente
 
 
-## Rodar localmente
+## Instalação
 ### Cria e ativa ambiente virtual
 `python3 -m venv .venv && source .venv/bin/activate`
 
@@ -26,9 +26,15 @@ Para isso, utilizei a linguagem Python, com algumas bibliotecas:
 ### Instalando *dotenv*
 `pip install python-dotenv`
 
-### Executar localmente
+### Antes de executar
 1. Em `.env_example`, defina o caminho dos arquivos a serem baixados em PATH_FILE e a quantidade dos arquivos em AMOUNT
 2. Mude o nome de `.env_example` para `.env`
-3. Execute localmente com:
 
+### Executando
+No diretório raiz, execute:
 `python3 main.py`
+
+### Resultado
+No diretório escolhido, serão encontrados os arquivos baixados:
+
+![Downloaded files](./downloaded-files.png)
